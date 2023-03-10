@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  redis-master:
+    image: redis/redis-stack-server:latest
+    command: > 
+     redis-stack-server 
+     --requirepass ${REDIS_PASSWORD} 
+     --masterauth ${MASTER_PASSWORD}
+    container_name: redis-master
+    environment:
+      - TZ=Asia/Tehran
+    restart: unless-stopped
+    mem_limit: 2g
+    ports:
+      - '${MASTER_OUTPORT}:6379'
+    volumes:
+      - redis-master:/usr/local/etc/redis
+      - redis-master:/data
+  redis-sentinel-m:
+    image: bitnami/redis-sentinel
+    restart: unless-stopped
+    ports:
+      - '${SENTINEL_OUTPORT}:26379'
+    environment:
+      - REDIS_MASTER_HOST=${REDIS_MASTER_HOST}
+      - REDIS_MASTER_PORT_NUMBER=${MASTER_OUTPORT}
+      - REDIS_MASTER_PASSWORD=${MASTER_PASSWORD}
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=${REDIS_SENTINEL_QUORUM}
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=${REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS}
+      - REDIS_SENTINEL_FAILOVER_TIMEOUT=${REDIS_SENTINEL_FAILOVER_TIMEOUT}
+      - REDIS_SENTINEL_ANNOUNCE_IP=${REDIS_SENTINEL_ANNOUNCE_IP}
+      - REDIS_SENTINEL_ANNOUNCE_PORT=${SENTINEL_OUTPORT}
+    depends_on:
+      - redis-master   
+ 
+volumes:
+  redis-master:
