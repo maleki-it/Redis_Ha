@@ -1,3 +1,3 @@
-                                                             REDIS-HA With Sentinels
+REDIS-HA With Sentinels
 
 ![plot](./redis.drawio.png)
