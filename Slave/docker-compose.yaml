@@ -2,26 +2,28 @@ version: '3.8'
 services:
   redis-slave:
     image: redis/redis-stack-server:latest
-    command: > 
-     redis-stack-server 
-     --slaveof ${REDIS_MASTER_HOST} ${MASTER_OUTPORT} 
-     --requirepass ${REDIS_PASSWORD} 
-     --masterauth ${MASTER_PASSWORD} 
-     --replica-announce-ip ${REPLICA_ANNOUNCE_IP}  
+    command: >
+     redis-stack-server
+     --slaveof ${REDIS_MASTER_HOST} ${MASTER_OUTPORT}
+     --requirepass ${REDIS_PASSWORD}
+     --masterauth ${MASTER_PASSWORD}
+     --replica-announce-ip ${REPLICA_ANNOUNCE_IP}
      --replica-announce-port ${REPLICA_ANNOUNCE_PORT}
-    container_name: redis-slave
+    container_name: redis-prod-slave
     environment:
       - TZ=Asia/Tehran
     restart: unless-stopped
-    mem_limit: 3g
+    mem_limit: 8g
     ports:
-      - '${REPLICA_ANNOUNCE_PORT}:6379'
+      - '${MASTER_OUTPORT}:6379'
     volumes:
-      - redis-slave:/usr/local/etc/redis
-      - redis-slave:/data
-  redis-sentinel-m:
+      - redis-prod-slave:/usr/local/etc/redis
+      - redis-prod-slave:/data
+      - redis-prod-slave:/var/lib/redis-stack
+  sentinel:
     image: bitnami/redis-sentinel
     restart: unless-stopped
+    mem_limit: 2g
     ports:
       - '${SENTINEL_OUTPORT}:26379'
     environment:
@@ -33,10 +35,17 @@ services:
       - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=${REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS}
       - REDIS_SENTINEL_FAILOVER_TIMEOUT=${REDIS_SENTINEL_FAILOVER_TIMEOUT}
       - REDIS_SENTINEL_ANNOUNCE_IP=${REDIS_SENTINEL_ANNOUNCE_IP}
-      - REDIS_SENTINEL_ANNOUNCE_PORT=${SENTINEL_OUTPORT}
-    depends_on:
-      - redis-slave   
- 
+      - REDIS_SENTINEL_ANNOUNCE_PORT=${REDIS_SENTINEL_ANNOUNCE_PORT}
+      - REDIS_SENTINEL_PORT_NUMBER=${REDIS_SENTINEL_PORT_NUMBER}
+      - REDIS_SENTINEL_PASSWORD=${MASTER_PASSWORD}
+     # - slave-priority 0
+    network_mode: "host"
+   # volumes:
+    #  - redis-sentinel:/bitnami
+
+   # depends_on:
+    #  - redis-stg-slave
+
 volumes:
-  redis-slave:
-  
+  redis-prod-slave:
+ # redis-sentinel:
