@@ -9,6 +9,9 @@ services:
     container_name: redis-master
     environment:
       - TZ=Asia/Tehran
+      - REDISEARCH_ARGS=TIMEOUT 5000
+      - REDISEARCH_ARGS=MAXSEARCHRESULTS -1
+      - REDISEARCH_ARGS=CONCURRENT_WRITE_MODE      
     restart: unless-stopped
     mem_limit: 2g
     ports:
