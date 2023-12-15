@@ -1,0 +1,6 @@
+@RediSearch_webapi_HostAddress = http://localhost:5213
+
+GET {{RediSearch_webapi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
