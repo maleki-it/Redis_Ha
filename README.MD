@@ -17,7 +17,7 @@ In this scenario to balance your Redis server load you have to have a load balan
 
 Consider we have the following structure for our Redis servers:
 
-https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RedisSentinelAndReplica.png
+![plot](https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RedisSentinelAndReplica.png)
 
 
 **Creating a Redis connection factory**
