@@ -21,13 +21,6 @@ namespace RediSearch_webapi.Controllers
 		{
 			return _productService.GetAll(cancellationToken);
 		}
-		[HttpGet]
-		[Route(nameof(CreateIndex))]
-		public async Task<IActionResult> CreateIndex(CancellationToken cancellationToken)
-		{
-			await _productService.CreateProductIndex(cancellationToken);
-			return Ok();
-		}
 
 		[HttpPost]
 		[Route(nameof(AddRandomProduct))]

@@ -54,10 +54,10 @@ public class ProductService
 		await productCollection.InsertAsync(products);
 	}
 
-	public async Task<IList<Product>> GetAll(CancellationToken cancellationToken)
+	public  Task<IList<Product>> GetAll(CancellationToken cancellationToken)
 	{
 		var provider = new RedisConnectionProvider(_redisConnectionFactory.GetReadConnection());
 		var productCollection = provider.RedisCollection<Product>();
-		return await productCollection.Skip(0).Take(100).ToListAsync();
+		return productCollection.Skip(0).Take(100).ToListAsync();
 	}
 }
