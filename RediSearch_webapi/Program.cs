@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRedisConnection(builder.Configuration);
 
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddHostedService<RedisSearchIndexHostedService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
