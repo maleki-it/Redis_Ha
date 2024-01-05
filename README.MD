@@ -1,4 +1,4 @@
-REDIS-HA With Sentinels
+# REDIS-HA With Sentinels #
 
 ![plot](./redis.drawio.png)
 
@@ -6,7 +6,7 @@ use a Strong Password
 Port Can be Changed
 set IPs in .env file
 
-**Separating Read and Write Redis Connection in .net core application**
+## Separating Read and Write Redis Connection in .net core application ##
 
 In this section, We want to describe how to separate the Redis connection in the .net core application.
 
@@ -17,10 +17,10 @@ In this scenario to balance your Redis server load you have to have a load balan
 
 Consider we have the following structure for our Redis servers:
 
-https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RedisSentinelAndReplica.png
+![plot](https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RedisSentinelAndReplica.png)
 
 
-**Creating a Redis connection factory**
+### Creating a Redis connection factory ###
 
 We have created a connection factory as follows:
 ```
@@ -48,7 +48,7 @@ You find the above code in in the following URL:
 
 https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RediSearch_webapi/Factories/RedisConnectionFactory.cs
 
-**Creating a Read Connection**
+### Creating a Read Connection ###
 
 ```
 		var replicaConfig = new ConfigurationOptions()
@@ -61,11 +61,11 @@ https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RediSearch_web
 		}
 		ConnectionMultiplexer readConnectionMux = ConnectionMultiplexer.Connect(replicaConfig);
 ```
-You can also create your read Connection in the following way:
+You can also create your read Connection in the following way:👇👇
 
 ``` ConnectionMultiplexer readConnectionMux = ConnectionMultiplexer.Connect("replica1,replica2,replica3,...,replica2n;Password=YourStrongPassword") ```
 
-**Creating a Write Connection**
+### Creating a Write Connection ###
 
 In this scenario, you have to create a "Sentinel" Connection:
 ```
@@ -88,7 +88,7 @@ In this scenario, you have to create a "Sentinel" Connection:
 		};
 		var masterConnection = sentinelConnection.GetSentinelMasterConnection(masterConfig);
 ```
-You can find the full configuration in this URL:
+You can find the full configuration in this URL: 👇👇
 
 https://github.com/maleki-it/Redis_Ha/blob/add-dotnet-api-example/RediSearch_webapi/RedisConnectionRegistrationExtenstion.cs
 
